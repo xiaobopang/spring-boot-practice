@@ -78,5 +78,6 @@ sa-token:
   token-prefix: "Bearer"
   # jwt秘钥
   jwt-secret-key: sdkjfalksdjf3242323kjksdfkasjd712312
+  token-style: random-128
 
 
