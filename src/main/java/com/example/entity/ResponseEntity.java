@@ -1,4 +1,4 @@
-package com.example.exception;
+package com.example.entity;
 
 import com.example.constant.HttpStatus;
 import lombok.Data;

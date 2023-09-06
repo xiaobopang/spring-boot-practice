@@ -2,10 +2,12 @@ package com.example.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.dto.UserDTO;
+import com.example.entity.PageQuery;
 import com.example.entity.User;
-import org.springframework.data.domain.Page;
+import com.example.page.TableDataInfo;
 
 import java.util.List;
 
@@ -23,6 +25,8 @@ public interface UserService extends IService<User> {
     void add(List<User> users);
 
     List<User> selectByParam(UserDTO userDTO);
+
+    TableDataInfo<User> userPage(PageQuery pageQuery, UserDTO userDTO);
 }
 
 

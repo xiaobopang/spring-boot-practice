@@ -1,14 +1,14 @@
 package com.example.service.impl;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.dto.UserDTO;
+import com.example.entity.PageQuery;
 import com.example.entity.User;
 import com.example.mapper.UserMapper;
+import com.example.page.TableDataInfo;
 import com.example.service.UserService;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,23 +24,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     UserMapper userMapper;
 
     //    查询所有
+    @Override
     public List<User> selectAll(){
         return userMapper.selectAll();
     }
 
     //添加一条数据
+    @Override
     public int add(User user) {
         return userMapper.insert(user);
     }
     //添加多条数据
+    @Override
     public void add(List<User> users) {
         for (User user : users) {
             add(user);
         }
     }
-
+    @Override
     public List<User> selectByParam(UserDTO userDTO){
         return userMapper.selectByParam(userDTO);
+    }
+
+    @Override
+    public TableDataInfo<User> userPage(PageQuery pageQuery, UserDTO userDTO) {
+        Page<User> page = baseMapper.userPageList(pageQuery.build(), userDTO);
+        return TableDataInfo.build(page);
     }
 
 }

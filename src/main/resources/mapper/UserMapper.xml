@@ -34,4 +34,20 @@
         select * from user ${ew.customSqlSegment}
     </select>
 
+    <select id="userPageList" resultType="com.example.entity.User">
+        select  * from user
+        <where>
+            <!-- 参数不为空时, 拼接动态sql -->
+            <if test="userDTO.id !=null and userDTO.id !=''">
+                id =#{userDTO.id}
+            </if>
+
+            <!-- 参数不为空时, 拼接动态sql -->
+            <if test="userDTO.name!=null and userDTO.name!=''">
+                and name like "%"#{userDTO.name}"%"
+            </if>
+        </where>
+
+    </select>
+
 </mapper>
