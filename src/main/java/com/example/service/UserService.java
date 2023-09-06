@@ -19,8 +19,8 @@ public interface UserService extends IService<User> {
     //添加一条数据
     int add(User user);
 
-    //添加多条数据
-    void add(List<User> users);
+    //详情
+    UserVO detail(Integer id);
 
     List<UserVO> selectByParam(UserDTO userDTO);
 

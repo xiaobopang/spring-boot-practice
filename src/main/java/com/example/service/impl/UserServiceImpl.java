@@ -37,10 +37,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
     //添加多条数据
     @Override
-    public void add(List<User> users) {
-        for (User user : users) {
-            add(user);
-        }
+    public UserVO detail(Integer id) {
+        return userMapper.detail(id);
     }
     @Override
     public List<UserVO> selectByParam(UserDTO userDTO){

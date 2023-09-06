@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * spring工具类
- *
- *
  */
 @Component
 public final class SpringUtils extends SpringUtil {

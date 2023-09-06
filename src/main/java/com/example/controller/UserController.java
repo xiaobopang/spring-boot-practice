@@ -60,7 +60,7 @@ public class UserController {
         return ResponseEntity.success(mapIPage);
     }
 
-    @GetMapping("page2")
+    @GetMapping ("page2")
     @Operation(summary = "订单分页查询")
     public TableDataInfo<UserVO> orderPage(UserDTO userDTO, PageQuery pageQuery) {
         return userService.userPage(pageQuery, userDTO);
@@ -80,6 +80,13 @@ public class UserController {
         userService.save(user);
 
         return ResponseEntity.success();
+    }
+
+    @GetMapping("detail/{id}")
+    @Operation(summary = "用户详情")
+    public ResponseEntity<UserVO> detail(@PathVariable(name = "id") Integer id) {
+        UserVO user = userService.detail(id);
+        return ResponseEntity.success(user);
     }
 }
 

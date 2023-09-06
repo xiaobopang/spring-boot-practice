@@ -9,7 +9,6 @@ import java.io.Serializable;
 /**
  * 响应信息主体
  *
- *
  */
 @Data
 @NoArgsConstructor

@@ -47,7 +47,12 @@
                 and name like "%"#{userDTO.name}"%"
             </if>
         </where>
+    </select>
 
+    <select id="detail" resultType="com.example.domain.vo.UserVO">
+        select *
+        from user
+        where id = #{id}
     </select>
 
 </mapper>

@@ -16,6 +16,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.util.Objects;
 
 /**
  * 全局异常处理器
@@ -51,8 +52,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Void> handleCannotFindDataSourceException(MyBatisSystemException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         String message = e.getMessage();
-        if (message.contains("CannotFindDataSourceException")) {
-            log.error("请求地址'{}', 未找到数据源" , requestURI);
+        if (message != null && message.contains("CannotFindDataSourceException")) {
+            log.error("请求地址'{}', 未找到数据源", requestURI);
             return ResponseEntity.fail("未找到数据源，请联系管理员确认");
         }
         log.error("请求地址'{}', Mybatis系统异常" , requestURI, e);
@@ -86,7 +87,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Void> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
-        String message = e.getBindingResult().getFieldError().getDefaultMessage();
+        String message = Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage();
         return ResponseEntity.fail(message);
     }
 

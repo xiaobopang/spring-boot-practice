@@ -24,5 +24,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     Page<UserVO> userPageList(@Param("page") Page page, @Param("userDTO") UserDTO userDTO);
 
+    UserVO detail(Integer id);
+
 }
 
