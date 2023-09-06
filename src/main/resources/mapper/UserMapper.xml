@@ -16,7 +16,7 @@
         from user
     </select>
 
-    <select id="selectByParam" parameterType="com.example.entity.User" resultMap="selectAllResultMap">
+    <select id="selectByParam" parameterType="com.example.domain.vo.UserVO" resultMap="selectAllResultMap">
         select * from user
         <where>
             <trim prefixOverrides="and">
@@ -30,11 +30,11 @@
         </where>
     </select>
 
-    <select id="selectByPage" resultType="com.example.entity.User">
+    <select id="selectByPage" resultType="com.example.domain.vo.UserVO">
         select * from user ${ew.customSqlSegment}
     </select>
 
-    <select id="userPageList" resultType="com.example.entity.User">
+    <select id="userPageList" resultType="com.example.domain.vo.UserVO">
         select  * from user
         <where>
             <!-- 参数不为空时, 拼接动态sql -->

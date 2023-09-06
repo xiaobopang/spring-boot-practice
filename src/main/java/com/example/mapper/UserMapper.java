@@ -5,7 +5,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.dto.UserDTO;
+import com.example.domain.dto.UserDTO;
+import com.example.domain.vo.UserVO;
 import com.example.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,13 +16,13 @@ import java.util.List;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
     // 自定义方法
-    List<User> selectAll();
+    List<UserVO> selectAll();
 
-    List<User> selectByParam(UserDTO userDTO);
+    List<UserVO> selectByParam(UserDTO userDTO);
 
-    IPage<User> selectByPage(IPage<User> userPage , @Param(Constants.WRAPPER) Wrapper<User> userWrapper);
+    IPage<UserVO> selectByPage(IPage<UserVO> userPage , @Param(Constants.WRAPPER) Wrapper<User> userWrapper);
 
-    Page<User> userPageList(@Param("page") Page page, @Param("userDTO") UserDTO userDTO);
+    Page<UserVO> userPageList(@Param("page") Page page, @Param("userDTO") UserDTO userDTO);
 
 }
 

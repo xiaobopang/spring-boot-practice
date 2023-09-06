@@ -1,9 +1,9 @@
 package com.example.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.example.dto.UserDTO;
+import com.example.domain.dto.UserDTO;
 import com.example.entity.User;
-import com.example.entity.ResponseEntity;
+import com.example.domain.ResponseEntity;
 import com.example.mapper.UserMapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;

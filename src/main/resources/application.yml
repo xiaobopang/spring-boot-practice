@@ -74,10 +74,30 @@ sa-token:
   is-log: false
   # 是否从cookie中读取token
   is-read-cookie: false
+  # 是否尝试从header里读取token
+  is-read-header: true
   # token前缀
   token-prefix: "Bearer"
   # jwt秘钥
   jwt-secret-key: sdkjfalksdjf3242323kjksdfkasjd712312
-  token-style: random-128
+
+# security配置
+security:
+  # 排除路径
+  excludes:
+    # 静态资源
+    - /*.html
+    - /**/*.html
+    - /**/*.css
+    - /**/*.js
+    # 公共路径
+    - /favicon.ico
+    - /error
+    # swagger 文档配置
+    - /*/api-docs
+    - /*/api-docs/**
+    # actuator 监控配置
+    - /actuator
+    - /actuator/**
 
 

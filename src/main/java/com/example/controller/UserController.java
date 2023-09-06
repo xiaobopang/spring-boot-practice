@@ -5,10 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.dto.UserDTO;
-import com.example.entity.PageQuery;
+import com.example.domain.dto.UserDTO;
+import com.example.domain.PageQuery;
+import com.example.domain.vo.UserVO;
 import com.example.entity.User;
-import com.example.entity.ResponseEntity;
+import com.example.domain.ResponseEntity;
 import com.example.mapper.UserMapper;
 import com.example.page.TableDataInfo;
 import com.example.service.UserService;
@@ -37,21 +38,21 @@ public class UserController {
 
     @ApiOperation("用户列表")
     @PostMapping("/list")
-    public ResponseEntity<List<User>> selectList(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<List<UserVO>> selectList(@RequestBody UserDTO userDTO) {
 
-        List<User> list = userService.selectByParam(userDTO);
+        List<UserVO> list = userService.selectByParam(userDTO);
 
         return ResponseEntity.success(list);
     }
 
     @ApiOperation("用户列表（分页）")
     @PostMapping("/page")
-    public ResponseEntity<IPage<User>> selectPage(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<IPage<UserVO>> selectPage(@RequestBody UserDTO userDTO) {
         LambdaQueryWrapper<User> userLambdaQueryWrapper2 = Wrappers.lambdaQuery();
         userLambdaQueryWrapper2.like(User::getName, userDTO.getName());
 
-        Page<User> mapPage = new Page<>(1, 10);
-        IPage<User> mapIPage = userMapper.selectByPage(mapPage, userLambdaQueryWrapper2);
+        Page<UserVO> mapPage = new Page<>(1, 10);
+        IPage<UserVO> mapIPage = userMapper.selectByPage(mapPage, userLambdaQueryWrapper2);
         System.out.println("xml总页数： " + mapIPage.getPages());
         System.out.println("xml总记录数： " + mapIPage.getTotal());
         mapIPage.getRecords().forEach(System.out::println);
@@ -61,7 +62,7 @@ public class UserController {
 
     @GetMapping("page2")
     @Operation(summary = "订单分页查询")
-    public TableDataInfo<User> orderPage(UserDTO userDTO, PageQuery pageQuery) {
+    public TableDataInfo<UserVO> orderPage(UserDTO userDTO, PageQuery pageQuery) {
         return userService.userPage(pageQuery, userDTO);
     }
 

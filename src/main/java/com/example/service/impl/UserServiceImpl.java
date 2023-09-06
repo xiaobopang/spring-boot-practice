@@ -3,8 +3,9 @@ package com.example.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.dto.UserDTO;
-import com.example.entity.PageQuery;
+import com.example.domain.dto.UserDTO;
+import com.example.domain.PageQuery;
+import com.example.domain.vo.UserVO;
 import com.example.entity.User;
 import com.example.mapper.UserMapper;
 import com.example.page.TableDataInfo;
@@ -25,7 +26,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     //    查询所有
     @Override
-    public List<User> selectAll(){
+    public List<UserVO> selectAll(){
         return userMapper.selectAll();
     }
 
@@ -42,13 +43,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
     @Override
-    public List<User> selectByParam(UserDTO userDTO){
+    public List<UserVO> selectByParam(UserDTO userDTO){
         return userMapper.selectByParam(userDTO);
     }
 
     @Override
-    public TableDataInfo<User> userPage(PageQuery pageQuery, UserDTO userDTO) {
-        Page<User> page = baseMapper.userPageList(pageQuery.build(), userDTO);
+    public TableDataInfo<UserVO> userPage(PageQuery pageQuery, UserDTO userDTO) {
+        Page<UserVO> page = baseMapper.userPageList(pageQuery.build(), userDTO);
         return TableDataInfo.build(page);
     }
 

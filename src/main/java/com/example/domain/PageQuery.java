@@ -1,4 +1,4 @@
-package com.example.entity;
+package com.example.domain;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;

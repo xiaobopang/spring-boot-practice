@@ -1,7 +1,7 @@
 package com.example.exception;
 
 import cn.dev33.satoken.exception.NotLoginException;
-import com.example.entity.ResponseEntity;
+import com.example.domain.ResponseEntity;
 import com.example.util.StreamUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.MyBatisSystemException;

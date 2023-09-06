@@ -1,11 +1,9 @@
 package com.example.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.dto.UserDTO;
-import com.example.entity.PageQuery;
+import com.example.domain.dto.UserDTO;
+import com.example.domain.PageQuery;
+import com.example.domain.vo.UserVO;
 import com.example.entity.User;
 import com.example.page.TableDataInfo;
 
@@ -16,7 +14,7 @@ import java.util.List;
  */
 public interface UserService extends IService<User> {
     //    查询所有
-    List<User> selectAll();
+    List<UserVO> selectAll();
 
     //添加一条数据
     int add(User user);
@@ -24,9 +22,9 @@ public interface UserService extends IService<User> {
     //添加多条数据
     void add(List<User> users);
 
-    List<User> selectByParam(UserDTO userDTO);
+    List<UserVO> selectByParam(UserDTO userDTO);
 
-    TableDataInfo<User> userPage(PageQuery pageQuery, UserDTO userDTO);
+    TableDataInfo<UserVO> userPage(PageQuery pageQuery, UserDTO userDTO);
 }
 
 
