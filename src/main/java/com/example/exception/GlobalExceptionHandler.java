@@ -141,7 +141,7 @@ public class GlobalExceptionHandler {
         } else if (nle.getType().equals(NotLoginException.KICK_OUT)) {
             message = "非法请求(token已被踢下线)";
         } else {
-            message = "非法请求(当前会话未登录)";
+            message = "非法请求(token已被冻结)";
         }
 
         return ResponseEntity.fail(HttpStatus.HTTP_UNAUTHORIZED, message);
