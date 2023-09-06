@@ -65,7 +65,7 @@ sa-token:
   # token有效期，单位秒，-1代表永不过期
   timeout: 86400
   # token临时有效期 (指定时间内无操作就视为token过期)，单位秒
-  activity-timeout: 1800
+  active-timeout: 1800
   # 是否允许同一账号并发登录 (为false时新登录挤掉旧登录)
   is-concurrent: true
   # 在多人登录同一账号时，是否共用一个token (为false时每次登录新建一个token)
@@ -85,6 +85,7 @@ sa-token:
 security:
   # 排除路径
   excludes:
+    - /swagger-resources/**
     # 静态资源
     - /*.html
     - /**/*.html
@@ -99,5 +100,9 @@ security:
     # actuator 监控配置
     - /actuator
     - /actuator/**
+
+--- # knife4j配置
+knife4j:
+  enable: true
 
 

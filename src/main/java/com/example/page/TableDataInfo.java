@@ -27,7 +27,7 @@ public class TableDataInfo<T> implements Serializable {
     /**
      * 列表数据
      */
-    private List<T> rows;
+    private List<T> list;
 
     /**
      * 消息状态码
@@ -46,7 +46,7 @@ public class TableDataInfo<T> implements Serializable {
      * @param total 总记录数
      */
     public TableDataInfo(List<T> list, long total) {
-        this.rows = list;
+        this.list = list;
         this.total = total;
     }
 
@@ -54,7 +54,7 @@ public class TableDataInfo<T> implements Serializable {
         TableDataInfo<T> rspData = new TableDataInfo<>();
         rspData.setCode(HttpStatus.HTTP_OK);
         rspData.setMsg("查询成功");
-        rspData.setRows(page.getRecords());
+        rspData.setList(page.getRecords());
         rspData.setTotal(page.getTotal());
         return rspData;
     }
@@ -63,7 +63,7 @@ public class TableDataInfo<T> implements Serializable {
         TableDataInfo<T> rspData = new TableDataInfo<>();
         rspData.setCode(HttpStatus.HTTP_OK);
         rspData.setMsg("查询成功");
-        rspData.setRows(list);
+        rspData.setList(list);
         rspData.setTotal(list.size());
         return rspData;
     }

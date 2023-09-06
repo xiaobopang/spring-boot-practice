@@ -26,22 +26,20 @@ import java.util.stream.Collectors;
 public class SwaggerConfig {
     @Bean
     public Docket docket() {
-        Docket docket = new Docket(DocumentationType.OAS_30)
+        return new Docket(DocumentationType.OAS_30)
                 .apiInfo(apiInfo()).enable(true)
                 .select()
                 //apis： 添加swagger接口提取范围
                 .apis(RequestHandlerSelectors.basePackage("com.example.controller"))
                 .paths(PathSelectors.any())
                 .build();
-
-        return docket;
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("swagger测试")
                 .description("swagger测试接口文档")
-                .contact(new Contact("张三三", "",""))
+                .contact(new Contact("张三三", "", ""))
                 .version("v1.0")
                 .build();
     }
@@ -70,7 +68,9 @@ public class SwaggerConfig {
             private List<RequestMappingInfoHandlerMapping> getHandlerMappings(Object bean) {
                 try {
                     Field field = ReflectionUtils.findField(bean.getClass(), "handlerMappings");
-                    field.setAccessible(true);
+                    if (field != null) {
+                        field.setAccessible(true);
+                    }
                     return (List<RequestMappingInfoHandlerMapping>) field.get(bean);
                 } catch (IllegalArgumentException | IllegalAccessException e) {
                     throw new IllegalStateException(e);
