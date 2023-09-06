@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 /**
  * Security 配置属性
  *
- *
  */
 @Data
 @Component

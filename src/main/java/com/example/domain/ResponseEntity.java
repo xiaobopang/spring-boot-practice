@@ -54,7 +54,6 @@ public class ResponseEntity<T> implements Serializable {
     public static <T> ResponseEntity<T> fail(String msg) {
         return restResult(null, FAIL, msg);
     }
-
     public static <T> ResponseEntity<T> fail(T data) {
         return restResult(data, FAIL, "操作失败");
     }

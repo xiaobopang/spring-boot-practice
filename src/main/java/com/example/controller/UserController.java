@@ -41,7 +41,6 @@ public class UserController {
     public ResponseEntity<List<UserVO>> selectList(@RequestBody UserDTO userDTO) {
 
         List<UserVO> list = userService.selectByParam(userDTO);
-
         return ResponseEntity.success(list);
     }
 
@@ -76,9 +75,7 @@ public class UserController {
 
         // dto 转换为 po,操作数据库.  对象属性值复制, 同名属性值复制
         BeanUtil.copyProperties(userDTO, user);
-
         userService.save(user);
-
         return ResponseEntity.success();
     }
 
@@ -88,6 +85,7 @@ public class UserController {
         UserVO user = userService.detail(id);
         return ResponseEntity.success(user);
     }
+
 }
 
 

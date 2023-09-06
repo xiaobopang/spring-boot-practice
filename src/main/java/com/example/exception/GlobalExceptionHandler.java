@@ -1,6 +1,7 @@
 package com.example.exception;
 
 import cn.dev33.satoken.exception.NotLoginException;
+import cn.hutool.http.HttpStatus;
 import com.example.domain.ResponseEntity;
 import com.example.util.StreamUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -140,10 +141,10 @@ public class GlobalExceptionHandler {
         } else if (nle.getType().equals(NotLoginException.KICK_OUT)) {
             message = "非法请求(token已被踢下线)";
         } else {
-            message = "当前会话未登录";
+            message = "非法请求(当前会话未登录)";
         }
 
-        return ResponseEntity.fail(message);
+        return ResponseEntity.fail(HttpStatus.HTTP_UNAUTHORIZED, message);
     }
 
 }
