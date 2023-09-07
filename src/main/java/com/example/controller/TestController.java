@@ -3,8 +3,17 @@ package com.example.controller;
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import cn.binarywang.wx.miniapp.util.WxMaConfigHolder;
+import cn.hutool.core.lang.TypeReference;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.http.Header;
+import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpStatus;
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONUtil;
 import com.example.domain.ResponseEntity;
+import com.example.domain.TestResp;
+import com.example.domain.vo.TestRespVO;
 import com.example.entity.User;
 import com.example.utils.JsonUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,13 +35,10 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TimeZone;
 
 
 @Api(tags = "测试 Swagger")
@@ -53,8 +59,9 @@ public class TestController {
 
         System.out.println("东八区时间戳(秒) : " + LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8")));
         System.out.println("东八区时间: " + LocalDateTime.now());
+        String uuid = IdUtil.randomUUID();
 
-        return ResponseEntity.success("success", Long.toString(LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8"))));
+        return ResponseEntity.success("success", uuid);
     }
 
     @ApiOperation("获取参数测试")
@@ -93,36 +100,31 @@ public class TestController {
     }
 
     @GetMapping("/request")
-    public ResponseEntity<Map<String, String>> request() {
-        Integer id = 1;
-        //参数
-        MultiValueMap<String, Object> param = new LinkedMultiValueMap<String, Object>();
-        param.add("id", id);
-        //请求头
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpblR5cGUiOiJsb2dpbiIsImxvZ2luSWQiOjEsInJuU3RyIjoiMGREUlZldHVUV0ZWZ3dUellnODg3Y09TYnpFaVVPVHUifQ.tSOW6A38p07xmwNTBXEb0adibxGsVyDO2ITKpz2jQhU");
-        //封装请求头
-        HttpEntity<MultiValueMap<String, Object>> formEntity = new HttpEntity<>(headers);
+    public ResponseEntity<TestRespVO> request() {
+
+        String url = "http://127.0.0.1:8088/user/detail/3";
 
         try {
-            //访问地址
-            String url = "http://localhost:8088/user/page2";
-            org.springframework.http.ResponseEntity<String> result = restTemplate.exchange(url + "?id=" + id, HttpMethod.GET, formEntity, String.class);
-            ObjectMapper mappers = new ObjectMapper();
+            //可以单独传入http参数，这样参数会自动做URL编码，拼接在URL中
+            HashMap<String, Object> paramMap = new HashMap<>();
+            paramMap.put("id", 3);
+            //链式构建请求
+            String result = HttpRequest.get(url)
+                    .header(Header.AUTHORIZATION, "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpblR5cGUiOiJsb2dpbiIsImxvZ2luSWQiOjEsInJuU3RyIjoiU1NXNkpkUzhtM0ZFdmRqY3RnTEZTMWpvalZkczZ4YmwifQ.eWUWm8pfZBNPa8PWN7huJe5yHTHCeK8ExHI0M86gCTw")//头信息，多个头信息多次调用此方法即可
+                    .form(paramMap)//表单内容
+                    .timeout(20000)//超时，毫秒
+                    .execute().body();
+            TypeReference<TestResp<TestRespVO>> typeReference = new TypeReference<TestResp<TestRespVO>>() {
+            };
+            log.info("========== http status code ============== {}", JSONUtil.toBean(result, typeReference, false).getCode());
+            TestRespVO user = JSONUtil.toBean(result, typeReference, false).getData();
 
-            Map<String, String> map = mappers.readValue(result.getBody(), Map.class);
-
-            if (map.containsKey("list")) {
-                System.out.println("============================= " + result.getStatusCodeValue());
-            }
-
-            return ResponseEntity.success(map);
+            return ResponseEntity.success("success", user);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info("Fail to send request from {}", url);
         }
 
         return ResponseEntity.success();
-
     }
 
     /**
