@@ -37,6 +37,7 @@
     <select id="userPageList" resultType="com.example.domain.vo.UserVO">
         select  * from user
         <where>
+            <trim prefixOverrides="and">
             <!-- 参数不为空时, 拼接动态sql -->
             <if test="userDTO.id !=null and userDTO.id !=''">
                 id =#{userDTO.id}
@@ -46,6 +47,7 @@
             <if test="userDTO.name!=null and userDTO.name!=''">
                 and name like "%"#{userDTO.name}"%"
             </if>
+            </trim>
         </where>
     </select>
 
