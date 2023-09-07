@@ -1,4 +1,4 @@
-package com.example.util;
+package com.example.utils;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;

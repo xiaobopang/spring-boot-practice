@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.example.constant.HttpStatus;
 import com.example.domain.dto.UserDTO;
 import com.example.entity.User;
 import com.example.domain.ResponseEntity;
@@ -37,7 +38,7 @@ public class AuthController {
 
         StpUtil.login(user.getId());
 
-        return ResponseEntity.success(StpUtil.getTokenValue());
+        return ResponseEntity.success("success", StpUtil.getTokenValue());
     }
 
 }

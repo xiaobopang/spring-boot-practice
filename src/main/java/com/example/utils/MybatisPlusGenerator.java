@@ -1,4 +1,4 @@
-package com.example.util;
+package com.example.utils;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;

@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 /**
  * 响应信息主体
@@ -28,6 +30,8 @@ public class ResponseEntity<T> implements Serializable {
     private int code;
 
     private String msg;
+
+    private int timestamp;
 
     private T data;
 
@@ -92,6 +96,7 @@ public class ResponseEntity<T> implements Serializable {
         responseEntity.setCode(code);
         responseEntity.setData(data);
         responseEntity.setMsg(msg);
+        responseEntity.setTimestamp((int) (LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8"))));
         return responseEntity;
     }
 

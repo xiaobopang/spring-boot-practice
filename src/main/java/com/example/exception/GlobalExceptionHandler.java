@@ -3,7 +3,7 @@ package com.example.exception;
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.hutool.http.HttpStatus;
 import com.example.domain.ResponseEntity;
-import com.example.util.StreamUtils;
+import com.example.utils.StreamUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.dao.DuplicateKeyException;

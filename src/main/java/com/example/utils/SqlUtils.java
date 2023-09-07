@@ -1,4 +1,4 @@
-package com.example.util;
+package com.example.utils;
 
 import com.example.exception.UtilException;
 import lombok.AccessLevel;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
  * sql操作工具类
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SqlUtil {
+public class SqlUtils {
 
     /**
      * 定义常用的 sql关键字

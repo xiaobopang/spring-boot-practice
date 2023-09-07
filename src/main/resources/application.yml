@@ -39,6 +39,7 @@ spring:
   jackson:
     # 日期格式化
     date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
     serialization:
       # 格式化输出
       indent_output: false
@@ -47,7 +48,6 @@ spring:
     deserialization:
       # 允许对象忽略json中不存在的属性
       fail_on_unknown_properties: false
-    time-zone: GMT+8
 
 mybatis-plus:
   mapper-locations:  classpath:/mapper/*Mapper.xml
@@ -104,5 +104,28 @@ security:
 --- # knife4j配置
 knife4j:
   enable: true
+
+#wechat配置
+logging:
+  level:
+    org.springframework.web: info
+    com.github.binarywang.demo.wx.miniapp: debug
+    cn.binarywang.wx.miniapp: debug
+
+wx:
+  miniapp:
+    configs:
+      - appid: 111
+        secret: 111
+        token: 111
+        aesKey: 1111
+        msgDataFormat: JSON
+        storageType: Jedis
+        storageKeyPrefix: xb
+        storageRedisHost: 127.0.0.1
+        storageRedisPort: 6379
+        storageRedisPassword: 12345678
+
+
 
 

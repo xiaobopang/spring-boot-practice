@@ -5,8 +5,8 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.exception.ServiceException;
-import com.example.util.SqlUtil;
-import com.example.util.StringUtils;
+import com.example.utils.SqlUtils;
+import com.example.utils.StringUtils;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -81,7 +81,7 @@ public class PageQuery implements Serializable {
         if (StringUtils.isBlank(orderByColumn) || StringUtils.isBlank(isAsc)) {
             return null;
         }
-        String orderBy = SqlUtil.escapeOrderBySql(orderByColumn);
+        String orderBy = SqlUtils.escapeOrderBySql(orderByColumn);
         orderBy = StringUtils.toUnderScoreCase(orderBy);
 
         // 兼容前端排序类型
