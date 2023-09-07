@@ -22,7 +22,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     IPage<UserVO> selectByPage(IPage<UserVO> userPage , @Param(Constants.WRAPPER) Wrapper<User> userWrapper);
 
-    Page<UserVO> userPageList(@Param("page") Page page, @Param("userDTO") UserDTO userDTO);
+    Page<UserVO> userPageList(@Param("page") Page<UserVO> page, @Param("userDTO") UserDTO userDTO);
 
     UserVO detail(Integer id);
 
