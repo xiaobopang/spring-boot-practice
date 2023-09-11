@@ -1,7 +1,9 @@
 package com.example.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.crypto.SecureUtil;
 import com.example.constant.HttpStatus;
+import com.example.domain.dto.LoginDTO;
 import com.example.domain.dto.UserDTO;
 import com.example.entity.User;
 import com.example.domain.ResponseEntity;
@@ -23,17 +25,19 @@ public class AuthController {
     private UserMapper userMapper;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Validated UserDTO userDTO) {
+    public ResponseEntity<String> login(@RequestBody @Validated LoginDTO loginDTO) {
 
-        String password = userDTO.getPassword();
-        User user = userMapper.selectById(userDTO.getId());
+        String password = loginDTO.getPassword();
+        String name = loginDTO.getName();
+
+        User user = userMapper.selectByName(name);
 
         if (Objects.isNull(user)) {
-            return ResponseEntity.fail("用户名不正确");
+            return ResponseEntity.fail("用户名或密码不正确");
         }
 
-        if (!user.getPassword().equals(password)) {
-            return ResponseEntity.fail("密码不正确");
+        if (!user.getPassword().equals(SecureUtil.sha1(SecureUtil.md5(loginDTO.getPassword() + user.getSalt())))) {
+            return ResponseEntity.fail("用户名或密码不正确");
         }
 
         StpUtil.login(user.getId());

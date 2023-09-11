@@ -26,5 +26,6 @@ public interface UserMapper extends BaseMapper<User> {
 
     UserVO detail(Integer id);
 
+    User selectByName(String name);
 }
 

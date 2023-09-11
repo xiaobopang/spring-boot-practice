@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.OrderMapper">
+
+    <resultMap id="selectResultMap" type="com.example.entity.Order">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="productNum" column="product_num"/>
+        <result property="productName" column="product_name"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="payAt" column="pay_at"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <select id="selectByUserId" resultType="com.example.domain.vo.OrderVO">
+        SELECT o.id,
+               o.user_id,
+               o.order_no,
+               o.product_name,
+               o.product_num,
+               o.price,
+               o.pay_at,
+               o.created_at,
+               o.updated_at
+        FROM USER u
+                 LEFT JOIN `order` o ON (o.user_id = u.id)
+        WHERE o.deleted_at IS NULL
+          AND (o.user_id = #{id})
+    </select>
+
+</mapper>

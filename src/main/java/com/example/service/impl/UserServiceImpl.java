@@ -47,7 +47,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public TableDataInfo<UserVO> userPage(PageQuery pageQuery, UserDTO userDTO) {
-        Page<UserVO> page = baseMapper.userPageList(pageQuery.build(), userDTO);
+        Page<UserVO> page = userMapper.userPageList(pageQuery.build(), userDTO);
         return TableDataInfo.build(page);
     }
 

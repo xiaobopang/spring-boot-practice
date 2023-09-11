@@ -31,6 +31,7 @@ spring:
       date-time: yyyy-MM-dd HH:mm:ss
     path match:
       matching-strategy: ANT_PATH_MATCHER
+
   jackson:
     # 日期格式化
     date-format: yyyy-MM-dd HH:mm:ss
@@ -47,7 +48,14 @@ spring:
 mybatis-plus:
   mapper-locations:  classpath:/mapper/*Mapper.xml
   configuration:
-      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: deletedAt # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-value: NOW() # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 'NULL' # 逻辑未删除值(默认为 0)
+      id-type: auto
+
 
 #Sa-Token配置
 sa-token:
@@ -71,6 +79,7 @@ sa-token:
   token-prefix: "Bearer"
   # jwt秘钥
   jwt-secret-key: sdkjfalksdjf3242323kjksdfkasjd712312
+
 
 # security配置
 security:

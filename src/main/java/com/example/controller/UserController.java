@@ -1,17 +1,21 @@
 package com.example.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.domain.dto.UserDTO;
 import com.example.domain.PageQuery;
+import com.example.domain.ResponseEntity;
+import com.example.domain.dto.UserDTO;
+import com.example.domain.vo.OrderVO;
 import com.example.domain.vo.UserVO;
 import com.example.entity.User;
-import com.example.domain.ResponseEntity;
 import com.example.mapper.UserMapper;
 import com.example.page.TableDataInfo;
+import com.example.service.OrderService;
 import com.example.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +40,10 @@ public class UserController {
     @Resource
     private UserMapper userMapper;
 
+
+    @Resource
+    private OrderService orderService;
+
     @ApiOperation("用户列表")
     @PostMapping("/list")
     public ResponseEntity<List<UserVO>> selectList(@RequestBody UserDTO userDTO) {
@@ -59,7 +67,7 @@ public class UserController {
         return ResponseEntity.success(mapIPage);
     }
 
-    @GetMapping ("page2")
+    @GetMapping("page2")
     @Operation(summary = "订单分页查询")
     public TableDataInfo<UserVO> orderPage(UserDTO userDTO, PageQuery pageQuery) {
         return userService.userPage(pageQuery, userDTO);
@@ -74,7 +82,10 @@ public class UserController {
         User user = new User();
 
         // dto 转换为 po,操作数据库.  对象属性值复制, 同名属性值复制
+        String salt = RandomUtil.randomString(9);
+        userDTO.setPassword(SecureUtil.sha1(SecureUtil.md5(userDTO.getPassword() + salt)));
         BeanUtil.copyProperties(userDTO, user);
+        user.setSalt(salt);
         userService.save(user);
         return ResponseEntity.success();
     }
@@ -85,6 +96,20 @@ public class UserController {
         UserVO user = userService.detail(id);
         return ResponseEntity.success(user);
     }
+
+    @GetMapping("del/{id}")
+    @Operation(summary = "删除用户")
+    public ResponseEntity<Void> del(@PathVariable(name = "id") Integer id) {
+        userMapper.deleteById(id);
+        return ResponseEntity.success();
+    }
+
+    @GetMapping("/{id}/orderList")
+    @Operation(summary = "订单列表")
+    public TableDataInfo<OrderVO> orderList(@PathVariable(name = "id") Integer id, PageQuery pageQuery) {
+        return orderService.selectByUserId(pageQuery, id);
+    }
+
 
 }
 
