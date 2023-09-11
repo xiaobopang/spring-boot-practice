@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import cn.dev33.satoken.secure.BCrypt;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
@@ -82,8 +83,8 @@ public class UserController {
         User user = new User();
 
         // dto 转换为 po,操作数据库.  对象属性值复制, 同名属性值复制
-        String salt = RandomUtil.randomString(9);
-        userDTO.setPassword(SecureUtil.sha1(SecureUtil.md5(userDTO.getPassword() + salt)));
+        String salt = RandomUtil.randomString(8);
+        userDTO.setPassword(BCrypt.hashpw((SecureUtil.sha1(userDTO.getPassword() + salt))));
         BeanUtil.copyProperties(userDTO, user);
         user.setSalt(salt);
         userService.save(user);

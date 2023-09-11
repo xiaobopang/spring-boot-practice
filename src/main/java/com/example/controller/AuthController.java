@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.example.constant.HttpStatus;
@@ -8,6 +9,7 @@ import com.example.domain.dto.UserDTO;
 import com.example.entity.User;
 import com.example.domain.ResponseEntity;
 import com.example.mapper.UserMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +21,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/auth")
+@Slf4j
 public class AuthController {
 
     @Resource
@@ -36,7 +39,8 @@ public class AuthController {
             return ResponseEntity.fail("用户名或密码不正确");
         }
 
-        if (!user.getPassword().equals(SecureUtil.sha1(SecureUtil.md5(loginDTO.getPassword() + user.getSalt())))) {
+        String userPassword = SecureUtil.sha1(password + user.getSalt());
+        if (!BCrypt.checkpw(userPassword, user.getPassword())) {
             return ResponseEntity.fail("用户名或密码不正确");
         }
 
