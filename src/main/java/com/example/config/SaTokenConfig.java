@@ -6,6 +6,8 @@ import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpLogic;
 import cn.dev33.satoken.stp.StpUtil;
 import com.example.config.properties.SecurityProperties;
+import com.example.handler.AllUrlHandler;
+import com.example.utils.spring.SpringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -25,11 +27,13 @@ public class SaTokenConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+
         // 注册路由拦截器，自定义验证规则
         registry.addInterceptor(new SaInterceptor(handler -> {
                     // 指定一条 match 规则
                     SaRouter.match("/**")    // 拦截的 path 列表，可以写多个 */
                             .notMatch("/auth/login")        // 排除掉的 path 列表，可以写多个
+                            .notMatch("/resources/favicon.ico")        // 排除掉的 path 列表，可以写多个
                             .check(r -> StpUtil.checkLogin());        // 要执行的校验动作，可以写完整的 lambda 表达式
                 })).addPathPatterns("/**")
                 // 排除不需要拦截的路径

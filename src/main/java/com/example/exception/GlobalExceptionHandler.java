@@ -1,6 +1,7 @@
 package com.example.exception;
 
 import cn.dev33.satoken.exception.NotLoginException;
+import cn.dev33.satoken.exception.SaTokenException;
 import cn.hutool.http.HttpStatus;
 import com.example.domain.ResponseEntity;
 import com.example.utils.StreamUtils;
@@ -11,8 +12,10 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
@@ -25,6 +28,19 @@ import java.util.Objects;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    /**
+     * 捕捉404异常,这个方法只在配置
+     * spring.mvc.throw-exception-if-no-handler-found=true来后起作用
+     */
+    @ResponseStatus(org.springframework.http.HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<Void> handleNotFound(NoHandlerFoundException e, HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        log.error("请求地址'{}',不支持'{}'请求", requestURI, e.getHttpMethod());
+        return ResponseEntity.fail(HttpStatus.HTTP_NOT_FOUND, "访问方法不存在");
+    }
+
     /**
      * 请求方式不支持
      */
@@ -32,7 +48,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Void> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e,
                                                                     HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',不支持'{}'请求" , requestURI, e.getMethod());
+        log.error("请求地址'{}',不支持'{}'请求", requestURI, e.getMethod());
         return ResponseEntity.fail("请求方式不支持");
     }
 
@@ -42,7 +58,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateKeyException.class)
     public ResponseEntity<Void> handleDuplicateKeyException(DuplicateKeyException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',数据库中已存在记录'{}'" , requestURI, e.getMessage());
+        log.error("请求地址'{}',数据库中已存在记录'{}'", requestURI, e.getMessage());
         return ResponseEntity.fail("数据库中已存在该记录，请联系管理员确认");
     }
 
@@ -57,7 +73,7 @@ public class GlobalExceptionHandler {
             log.error("请求地址'{}', 未找到数据源", requestURI);
             return ResponseEntity.fail("未找到数据源，请联系管理员确认");
         }
-        log.error("请求地址'{}', Mybatis系统异常" , requestURI, e);
+        log.error("请求地址'{}', Mybatis系统异常", requestURI, e);
         return ResponseEntity.fail(message);
     }
 
@@ -68,8 +84,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MissingPathVariableException.class)
     public ResponseEntity<Void> handleMissingPathVariableException(MissingPathVariableException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        log.error("请求路径中缺少必需的路径变量'{}',发生系统异常." , requestURI, e);
-        return ResponseEntity.fail(String.format("请求路径中缺少必需的路径变量[%s]" , e.getVariableName()));
+        log.error("请求路径中缺少必需的路径变量'{}',发生系统异常.", requestURI, e);
+        return ResponseEntity.fail(String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName()));
     }
 
     /**
@@ -78,8 +94,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Void> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        log.error("请求参数类型不匹配'{}',发生系统异常." , requestURI, e);
-        return ResponseEntity.fail(String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'" , e.getName(), e.getRequiredType().getName(), e.getValue()));
+        log.error("请求参数类型不匹配'{}',发生系统异常.", requestURI, e);
+        return ResponseEntity.fail(String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'", e.getName(), e.getRequiredType().getName(), e.getValue()));
     }
 
     /**
@@ -98,20 +114,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Void> handleRuntimeException(RuntimeException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',发生未知异常." , requestURI, e);
+        log.error("请求地址'{}',发生未知异常.", requestURI, e);
         return ResponseEntity.fail(e.getMessage());
     }
-
-    /**
-     * 系统异常
-     */
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Void> handleException(Exception e, HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        log.error("请求地址'{}',发生系统异常." , requestURI, e);
-        return ResponseEntity.fail(e.getMessage());
-    }
-
 
     /**
      * 自定义验证异常
@@ -125,13 +130,13 @@ public class GlobalExceptionHandler {
 
     // 全局异常拦截（拦截项目中的NotLoginException异常）
     @ExceptionHandler(NotLoginException.class)
-    public ResponseEntity<Void> handlerNotLoginException(NotLoginException nle) throws Exception {
+    public ResponseEntity<Void> handlerNotLoginException(NotLoginException nle, SaTokenException sat) throws Exception {
         // 打印堆栈，以供调试
         nle.printStackTrace();
         // 判断场景值，定制化异常信息
         String message = "";
         if (nle.getType().equals(NotLoginException.NOT_TOKEN)) {
-            message = "非法请求(未提供token)";
+            message = "非法请求(未能读取到有效token)";
         } else if (nle.getType().equals(NotLoginException.INVALID_TOKEN)) {
             message = "非法请求(token无效)";
         } else if (nle.getType().equals(NotLoginException.TOKEN_TIMEOUT)) {
@@ -141,10 +146,21 @@ public class GlobalExceptionHandler {
         } else if (nle.getType().equals(NotLoginException.KICK_OUT)) {
             message = "非法请求(token已被踢下线)";
         } else {
-            message = "非法请求(token已被冻结)";
+            message = "非法请求(未登录)";
         }
 
         return ResponseEntity.fail(HttpStatus.HTTP_UNAUTHORIZED, message);
+    }
+
+    /**
+     * 系统异常
+     */
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<Void> handleException(Exception e, HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        log.error("请求地址'{}',发生系统异常.", requestURI, e);
+        return ResponseEntity.fail(HttpStatus.HTTP_INTERNAL_ERROR, e.getMessage());
     }
 
 }

@@ -19,8 +19,8 @@ public class UserVO {
     @Schema(description = "年龄")
     private Integer age;
 
-    @Schema(description = "密码")
-    private String password;
+//    @Schema(description = "密码")
+//    private String password;
 
     @Schema(description = "创建时间")
     private Date createdAt;

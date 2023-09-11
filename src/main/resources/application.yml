@@ -1,11 +1,19 @@
 server:
   port: 8088
+  servlet:
+    # 应用的访问路径
+    context-path: /
+  error:
+    whitelabel:
+      enabled: false
 spring:
   profiles:
     active: @profiles.active@
   devtools:
     restart:
       enabled: true
+  mvc:
+    throw-exception-if-no-handler-found: true
 
 --- # knife4j配置
 knife4j:
