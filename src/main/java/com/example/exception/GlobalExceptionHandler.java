@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
@@ -154,9 +155,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.fail(HttpStatus.HTTP_UNAUTHORIZED, message);
     }
 
-    @ExceptionHandler(NestedServletException.class)
-    public ResponseEntity<String> handleNestedServletException(NestedServletException ex) {
-        return ResponseEntity.fail(ex.getMessage());
+    /**
+     * 拦截前端传参未正常接收错误
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<String> handleNestedServletException(HttpMessageNotReadableException ex) {
+        return ResponseEntity.fail("未读取到请求体,请确认参数数据格式是否正确");
     }
 
     /**

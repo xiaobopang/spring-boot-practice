@@ -25,7 +25,7 @@ public class ResponseEntity<T> implements Serializable {
     /**
      * 失败
      */
-    public static final int FAIL = 500;
+    public static final int FAIL = 400;
 
     private int code;
 

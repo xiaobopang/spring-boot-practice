@@ -12,6 +12,8 @@ spring:
   devtools:
     restart:
       enabled: true
+  thymeleaf:
+    cache: false
 
 --- # knife4j配置
 knife4j:
