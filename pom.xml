@@ -170,6 +170,13 @@
             <version>1.35.0.RC</version>
         </dependency>
 
+        <!-- Sa-Token 整合 Redis （使用 jackson 序列化方式） -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-redis-jackson</artifactId>
+            <version>1.35.0.RC</version>
+        </dependency>
+        
         <!-- 微信小程序开发整合 -->
         <dependency>
             <groupId>com.github.binarywang</groupId>

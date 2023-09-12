@@ -8,6 +8,9 @@ import com.example.domain.ResponseEntity;
 import com.example.domain.dto.LoginDTO;
 import com.example.entity.User;
 import com.example.mapper.UserMapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Objects;
 
+@Api(tags = "登录-登出")
 @RestController
 @RequestMapping("/auth")
 @Slf4j
@@ -23,6 +27,8 @@ public class AuthController {
     @Resource
     private UserMapper userMapper;
 
+    @ApiOperation("登录）")
+    @Operation(summary = "登录")
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Validated LoginDTO loginDTO) {
 
@@ -45,6 +51,8 @@ public class AuthController {
         return ResponseEntity.success("success", StpUtil.getTokenValue());
     }
 
+    @ApiOperation("登出）")
+    @Operation(summary = "登出")
     @GetMapping("/logout")
     public ResponseEntity<String> logout() {
         try {
