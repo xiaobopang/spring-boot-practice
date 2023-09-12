@@ -34,24 +34,6 @@ spring:
           max-idle: 10
           # 连接池中的最小空闲连接
           min-idle: 0
-  mvc:
-    format:
-      date-time: yyyy-MM-dd HH:mm:ss
-    path match:
-      matching-strategy: ANT_PATH_MATCHER
-
-  jackson:
-    # 日期格式化
-    date-format: yyyy-MM-dd HH:mm:ss
-    time-zone: GMT+8
-    serialization:
-      # 格式化输出
-      indent_output: false
-      # 忽略无法转换的对象
-      fail_on_empty_beans: false
-    deserialization:
-      # 允许对象忽略json中不存在的属性
-      fail_on_unknown_properties: false
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
