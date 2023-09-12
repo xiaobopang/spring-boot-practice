@@ -2,14 +2,13 @@ package com.example.listener;
 
 import cn.dev33.satoken.listener.SaTokenListener;
 import cn.dev33.satoken.stp.SaLoginModel;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
  * 自定义侦听器的实现
  */
-@RequiredArgsConstructor
+
 @Component
 @Slf4j
 public class MySaTokenListener implements SaTokenListener {

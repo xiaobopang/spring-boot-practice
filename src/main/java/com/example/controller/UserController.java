@@ -26,6 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 
 @Api(tags = "用户管理")
 @RestController
@@ -120,7 +121,8 @@ public class UserController {
         userDTO.setId(user.getId());
         userDTO.setPassword(BCrypt.hashpw((SecureUtil.sha1(userDTO.getPassword() + user.getSalt()))));
         BeanUtil.copyProperties(userDTO, user);
-
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
         userMapper.updateById(user);
         return ResponseEntity.success();
     }
