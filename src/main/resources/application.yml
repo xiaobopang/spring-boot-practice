@@ -9,11 +9,6 @@ server:
 spring:
   profiles:
     active: @profiles.active@
-  devtools:
-    restart:
-      enabled: true
-  thymeleaf:
-    cache: false
 
 --- # knife4j配置
 knife4j:

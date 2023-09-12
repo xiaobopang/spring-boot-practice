@@ -1,4 +1,7 @@
 spring:
+  devtools:
+    restart:
+      enabled: true
   datasource:
     username: root
     password: 12345678
