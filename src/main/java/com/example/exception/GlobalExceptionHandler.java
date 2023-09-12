@@ -6,6 +6,7 @@ import cn.hutool.http.HttpStatus;
 import com.example.domain.ResponseEntity;
 import com.example.utils.StreamUtils;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.util.NestedServletException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
@@ -161,6 +163,11 @@ public class GlobalExceptionHandler {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',发生系统异常.", requestURI, e);
         return ResponseEntity.fail(HttpStatus.HTTP_INTERNAL_ERROR, e.getMessage());
+    }
+
+    @ExceptionHandler(NestedServletException.class)
+    public ResponseEntity<String> handleNestedServletException(NestedServletException ex) {
+        return ResponseEntity.fail(ex.getMessage());
     }
 
 }

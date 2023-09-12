@@ -45,16 +45,9 @@ public class UserController {
     @Resource
     private OrderService orderService;
 
-    @ApiOperation("用户列表")
-    @PostMapping("/list")
-    public ResponseEntity<List<UserVO>> selectList(@RequestBody UserDTO userDTO) {
-
-        List<UserVO> list = userService.selectByParam(userDTO);
-        return ResponseEntity.success(list);
-    }
 
     @ApiOperation("用户列表（分页）")
-    @PostMapping("/page")
+    @PostMapping("/list")
     public ResponseEntity<IPage<UserVO>> selectPage(@RequestBody UserDTO userDTO) {
         LambdaQueryWrapper<User> userLambdaQueryWrapper2 = Wrappers.lambdaQuery();
         userLambdaQueryWrapper2.like(User::getName, userDTO.getName());
@@ -68,8 +61,9 @@ public class UserController {
         return ResponseEntity.success(mapIPage);
     }
 
-    @GetMapping("page2")
-    @Operation(summary = "订单分页查询")
+    @ApiOperation("用户列表（分页2）")
+    @GetMapping("list2")
+    @Operation(summary = "用户分页查询")
     public TableDataInfo<UserVO> orderPage(UserDTO userDTO, PageQuery pageQuery) {
         return userService.userPage(pageQuery, userDTO);
     }

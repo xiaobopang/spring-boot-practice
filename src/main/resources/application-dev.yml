@@ -46,7 +46,7 @@ spring:
       fail_on_unknown_properties: false
 
 mybatis-plus:
-  mapper-locations:  classpath:/mapper/*Mapper.xml
+  mapper-locations: classpath:/mapper/*Mapper.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
@@ -85,6 +85,7 @@ sa-token:
 security:
   # 排除路径
   excludes:
+    - /swagger-ui/**
     - /swagger-resources/**
     # 静态资源
     - /*.html
@@ -116,6 +117,7 @@ wx:
         storageRedisPassword: 12345678
 #wechat配置
 logging:
+  config: classpath:logback-plus.xml
   level:
     org.springframework.web: info
     com.github.binarywang.demo.wx.miniapp: debug
