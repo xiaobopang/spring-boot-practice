@@ -154,6 +154,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.fail(HttpStatus.HTTP_UNAUTHORIZED, message);
     }
 
+    @ExceptionHandler(NestedServletException.class)
+    public ResponseEntity<String> handleNestedServletException(NestedServletException ex) {
+        return ResponseEntity.fail(ex.getMessage());
+    }
+
     /**
      * 系统异常
      */
@@ -163,11 +168,6 @@ public class GlobalExceptionHandler {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',发生系统异常.", requestURI, e);
         return ResponseEntity.fail(HttpStatus.HTTP_INTERNAL_ERROR, e.getMessage());
-    }
-
-    @ExceptionHandler(NestedServletException.class)
-    public ResponseEntity<String> handleNestedServletException(NestedServletException ex) {
-        return ResponseEntity.fail(ex.getMessage());
     }
 
 }
