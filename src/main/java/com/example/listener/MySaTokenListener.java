@@ -13,13 +13,15 @@ public class MySaTokenListener extends SaTokenListenerForSimple {
     /*
      * SaTokenListenerForSimple 对所有事件提供了空实现，通过继承此类，你只需重写一部分方法即可实现一个可用的侦听器。
      */
+    private Integer i = 0;
 
     /**
      * 每次登录时触发
      */
     @Override
     public void doLogin(String loginType, Object loginId, String tokenValue, SaLoginModel loginModel) {
-        log.info("user doLogin, userId:{}, token:{}", loginId, tokenValue);
+        i++;
+        log.info("user doLogin, userId:{}, token:{}, times:{}", loginId, tokenValue, i);
     }
 
     @Override
