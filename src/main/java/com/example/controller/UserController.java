@@ -26,7 +26,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Api(tags = "用户管理")
 @RestController
@@ -48,6 +47,7 @@ public class UserController {
 
     @ApiOperation("用户列表（分页）")
     @PostMapping("/list")
+    @Operation(summary = "用户分页查询")
     public ResponseEntity<IPage<UserVO>> selectPage(@RequestBody UserDTO userDTO) {
         LambdaQueryWrapper<User> userLambdaQueryWrapper2 = Wrappers.lambdaQuery();
         userLambdaQueryWrapper2.like(User::getName, userDTO.getName());
@@ -63,7 +63,7 @@ public class UserController {
 
     @ApiOperation("用户列表（分页2）")
     @GetMapping("list2")
-    @Operation(summary = "用户分页查询")
+    @Operation(summary = "用户分页查询2")
     public TableDataInfo<UserVO> orderPage(UserDTO userDTO, PageQuery pageQuery) {
         return userService.userPage(pageQuery, userDTO);
     }
@@ -71,6 +71,7 @@ public class UserController {
     //数据验证 注意验证不通过不会终止程序 必须要手动遍历验证结果对象Errors查看是否验证不通过
     @ApiOperation("新增用户")
     @PostMapping("/add")
+    @Operation(summary = "新增用户")
     public ResponseEntity<Void> add(@RequestBody @Validated UserDTO userDTO) {
 
         log.info("添加用户成功: {}", userDTO.toString());
@@ -85,6 +86,7 @@ public class UserController {
         return ResponseEntity.success();
     }
 
+    @ApiOperation("用户详情")
     @GetMapping("detail/{id}")
     @Operation(summary = "用户详情")
     public ResponseEntity<UserVO> detail(@PathVariable(name = "id") Integer id) {
@@ -92,6 +94,7 @@ public class UserController {
         return ResponseEntity.success(user);
     }
 
+    @ApiOperation("删除用户")
     @GetMapping("del/{id}")
     @Operation(summary = "删除用户")
     public ResponseEntity<Void> del(@PathVariable(name = "id") Integer id) {
@@ -99,10 +102,27 @@ public class UserController {
         return ResponseEntity.success();
     }
 
+    @ApiOperation("用户订单列表")
     @GetMapping("/{id}/orderList")
     @Operation(summary = "订单列表")
     public TableDataInfo<OrderVO> orderList(@PathVariable(name = "id") Integer id, PageQuery pageQuery) {
         return orderService.selectByUserId(pageQuery, id);
+    }
+
+    @ApiOperation("更新用户信息）")
+    @PostMapping("update/{id}")
+    @Operation(summary = "更新用户")
+    public ResponseEntity<Void> update(@PathVariable(name = "id") Integer id, @RequestBody @Validated UserDTO userDTO) {
+        User user = userMapper.selectById(id);
+        if (user == null) {
+            return ResponseEntity.fail("用户不存在");
+        }
+        userDTO.setId(user.getId());
+        userDTO.setPassword(BCrypt.hashpw((SecureUtil.sha1(userDTO.getPassword() + user.getSalt()))));
+        BeanUtil.copyProperties(userDTO, user);
+
+        userMapper.updateById(user);
+        return ResponseEntity.success();
     }
 
 
