@@ -41,7 +41,6 @@ public class UserController {
     @Resource
     private UserMapper userMapper;
 
-
     @Resource
     private OrderService orderService;
 

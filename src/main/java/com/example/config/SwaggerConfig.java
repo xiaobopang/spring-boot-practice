@@ -27,7 +27,7 @@ public class SwaggerConfig {
     @Bean
     public Docket docket() {
         return new Docket(DocumentationType.OAS_30)
-                .apiInfo(apiInfo()).enable(true)
+                .apiInfo(apiInfo()).enable(false)
                 .select()
                 //apis： 添加swagger接口提取范围
                 .apis(RequestHandlerSelectors.basePackage("com.example.controller"))

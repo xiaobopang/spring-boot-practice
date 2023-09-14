@@ -14,8 +14,6 @@ spring:
   web:
     resources:
       add-mappings: false
-  format:
-    date-time: yyyy-MM-dd HH:mm:ss
 
   jackson:
     # 日期格式化

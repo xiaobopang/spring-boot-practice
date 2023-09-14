@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(org.springframework.http.HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<Void> handleNotFound(NoHandlerFoundException e, HttpServletRequest request) {
-        log.error("404异常'{}',不支持'{}'请求", request.getRequestURI(), e.getHttpMethod());
+        log.error("404异常'{}',异常信息：'{}'", request.getRequestURI(), e.getMessage());
         return ResponseEntity.fail(HttpStatus.HTTP_NOT_FOUND, "访问方法不存在");
     }
 
