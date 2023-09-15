@@ -25,6 +25,8 @@ public interface UserService extends IService<User> {
     List<UserVO> selectByParam(UserDTO userDTO);
 
     TableDataInfo<UserVO> userPage(PageQuery pageQuery, UserDTO userDTO);
+    //更新
+    Integer update(User user);
 }
 
 

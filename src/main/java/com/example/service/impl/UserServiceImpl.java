@@ -51,6 +51,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return TableDataInfo.build(page);
     }
 
+    @Override
+    public Integer update(User user) {
+        return userMapper.updateById(user);
+    }
 }
 
 
