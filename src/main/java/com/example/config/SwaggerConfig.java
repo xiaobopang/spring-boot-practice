@@ -19,6 +19,7 @@ import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -37,9 +38,9 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("swagger测试")
-                .description("swagger测试接口文档")
-                .contact(new Contact("张三三", "", ""))
+                .title("swagger文档")
+                .description("swagger接口文档")
+                .contact(new Contact("xb", "", ""))
                 .version("v1.0")
                 .build();
     }
@@ -51,7 +52,7 @@ public class SwaggerConfig {
             @Override
             public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
                 if (bean instanceof WebMvcRequestHandlerProvider || bean instanceof WebFluxRequestHandlerProvider) {
-                    customizeSpringfoxHandlerMappings(getHandlerMappings(bean));
+                    customizeSpringfoxHandlerMappings(Objects.requireNonNull(getHandlerMappings(bean)));
                 }
                 return bean;
             }
@@ -71,10 +72,13 @@ public class SwaggerConfig {
                     if (field != null) {
                         field.setAccessible(true);
                     }
-                    return (List<RequestMappingInfoHandlerMapping>) field.get(bean);
+                    if (field != null) {
+                        return (List<RequestMappingInfoHandlerMapping>) field.get(bean);
+                    }
                 } catch (IllegalArgumentException | IllegalAccessException e) {
                     throw new IllegalStateException(e);
                 }
+                return null;
             }
         };
     }
