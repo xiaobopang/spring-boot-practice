@@ -15,7 +15,7 @@ spring:
       matching-strategy: ANT_PATH_MATCHER
   web:
     resources:
-      add-mappings: true
+      add-mappings: false
 
   jackson:
     # 日期格式化
@@ -33,5 +33,26 @@ spring:
 --- # knife4j配置
 knife4j:
   enable: true
+
+# security配置
+security:
+  # 排除路径
+  excludes:
+    - /swagger-ui/**
+    - /swagger-resources/**
+    # 静态资源
+    - /*.html
+    - /**/*.html
+    - /**/*.css
+    - /**/*.js
+    # 公共路径
+    - /favicon.ico
+    - /error
+    # swagger 文档配置
+    - /*/api-docs
+    - /*/api-docs/**
+    # actuator 监控配置
+    - /actuator
+    - /actuator/**
 
 

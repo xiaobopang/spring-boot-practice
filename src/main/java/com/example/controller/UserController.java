@@ -5,8 +5,6 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -24,12 +22,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 
 @Api(tags = "用户管理")
 @RestController
@@ -125,8 +121,8 @@ public class UserController {
         userDTO.setPassword(BCrypt.hashpw((SecureUtil.sha1(userDTO.getPassword() + user.getSalt()))));
         BeanUtil.copyProperties(userDTO, u1);
 
-        int rows = userService.update(u1);
-        if (rows <= 0) {
+        Integer rows = userService.update(u1);
+        if (rows == 0) {
             return ResponseEntity.fail("更新失败");
         }
         return ResponseEntity.success();

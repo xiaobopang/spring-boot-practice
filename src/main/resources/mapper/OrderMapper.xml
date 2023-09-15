@@ -1,32 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mapper.OrderMapper">
 
-    <resultMap id="selectResultMap" type="com.example.entity.Order">
-        <id property="id" column="id"/>
-        <result property="userId" column="user_id"/>
-        <result property="productNum" column="product_num"/>
-        <result property="productName" column="product_name"/>
-        <result property="orderNo" column="order_no"/>
-        <result property="payAt" column="pay_at"/>
-        <result property="createdAt" column="created_at"/>
-        <result property="updatedAt" column="updated_at"/>
+    <resultMap id="BaseResultMap" type="com.example.entity.Order">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="orderNo" column="order_no" jdbcType="VARCHAR"/>
+            <result property="productName" column="product_name" jdbcType="VARCHAR"/>
+            <result property="productNum" column="product_num" jdbcType="INTEGER"/>
+            <result property="price" column="price" jdbcType="INTEGER"/>
+            <result property="payAt" column="pay_at" jdbcType="TIMESTAMP"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+            <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+            <result property="deletedAt" column="deleted_at" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <select id="selectByUserId" resultType="com.example.domain.vo.OrderVO">
-        SELECT o.id,
-               o.user_id,
-               o.order_no,
-               o.product_name,
-               o.product_num,
-               o.price,
-               o.pay_at,
-               o.created_at,
-               o.updated_at
-        FROM USER u
-                 LEFT JOIN `order` o ON (o.user_id = u.id)
-        WHERE o.deleted_at IS NULL
-          AND (o.user_id = #{id})
-    </select>
-
+    <sql id="Base_Column_List">
+        id,user_id,order_no,
+        product_name,product_num,price,
+        pay_at,status,created_at,
+        updated_at,deleted_at
+    </sql>
 </mapper>

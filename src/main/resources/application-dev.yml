@@ -41,6 +41,7 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     # 自动驼峰命名规则（camel case）映射
     map-underscore-to-camel-case: true
+
   global-config:
     db-config:
       logic-delete-field: deletedAt # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
@@ -71,28 +72,6 @@ sa-token:
   token-prefix: "Bearer"
   # jwt秘钥
   jwt-secret-key: sdkjfalksdjf3242323kjksdfkasjd712312
-
-
-# security配置
-security:
-  # 排除路径
-  excludes:
-    - /swagger-ui/**
-    - /swagger-resources/**
-    # 静态资源
-    - /*.html
-    - /**/*.html
-    - /**/*.css
-    - /**/*.js
-    # 公共路径
-    - /favicon.ico
-    - /error
-    # swagger 文档配置
-    - /*/api-docs
-    - /*/api-docs/**
-    # actuator 监控配置
-    - /actuator
-    - /actuator/**
 
 wx:
   miniapp:
