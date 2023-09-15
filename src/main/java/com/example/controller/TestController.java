@@ -119,7 +119,7 @@ public class TestController {
     }
 
     /**
-     * 登陆接口
+     * 微信小程序登陆接口
      */
     @GetMapping("/wxLogin")
     public ResponseEntity<String> wxLogin(String appid, String code) {

@@ -27,4 +27,6 @@ public class UserVO {
 
     @Schema(description = "更新时间")
     private Date updatedAt;
+
+    private Object test;
 }

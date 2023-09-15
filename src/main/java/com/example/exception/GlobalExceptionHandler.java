@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Void> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e,
                                                                     HttpServletRequest request) {
         log.error("请求方式不支持'{}',不支持'{}'请求", request.getRequestURI(), e.getMethod());
-        return ResponseEntity.fail("请求方式不支持");
+        return ResponseEntity.fail(HttpStatus.HTTP_BAD_METHOD, "请求方式不支持");
     }
 
     /**

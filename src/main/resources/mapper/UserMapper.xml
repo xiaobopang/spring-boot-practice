@@ -6,9 +6,19 @@
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="age" column="age"/>
+        <result property="salt" column="salt"/>
         <result property="password" column="password"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <resultMap id="detailResultMap" type="com.example.domain.vo.UserVO">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <association property="test" resultMap="selectAllResultMap" />
     </resultMap>
 
     <select id="selectAll" resultMap="selectAllResultMap">
@@ -31,7 +41,8 @@
     </select>
 
     <select id="selectByPage" resultType="com.example.domain.vo.UserVO">
-        select * from user ${ew.customSqlSegment}
+        select *
+        from user ${ew.customSqlSegment}
     </select>
 
     <select id="userPageList" resultType="com.example.domain.vo.UserVO">
@@ -51,10 +62,11 @@
         </where>
     </select>
 
-    <select id="detail" resultType="com.example.domain.vo.UserVO">
+    <select id="detail" resultMap="detailResultMap">
         select *
         from user
-        where id = #{id} AND deleted_at IS NULL
+        where id = #{id}
+          AND deleted_at IS NULL
     </select>
 
     <select id="selectByName" resultType="com.example.entity.User">
