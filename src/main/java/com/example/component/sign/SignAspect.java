@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * @author pdai
+ * 接口签名切面.
  */
 @Aspect
 @Component

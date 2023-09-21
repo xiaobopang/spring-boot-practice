@@ -9,6 +9,7 @@ import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpStatus;
 import cn.hutool.json.JSONUtil;
+import com.example.component.ratelimit.RateLimit;
 import com.example.component.sign.Signature;
 import com.example.domain.ResponseEntity;
 import com.example.domain.TestResp;
@@ -144,6 +145,7 @@ public class TestController {
             WxMaConfigHolder.remove();//清理ThreadLocal
         }
     }
+
     @ApiOperation("接口签名测试")
     @Signature
     @PostMapping("test/{id}")
@@ -151,6 +153,22 @@ public class TestController {
             , @RequestParam String client
             , @RequestBody User user) {
         return ResponseEntity.success(String.join(",", id, client, user.toString()));
+    }
+
+    @ApiOperation("限流测试")
+    @RateLimit
+    @GetMapping("/limit")
+    public ResponseEntity<String> limit() {
+        log.info("limit");
+        return ResponseEntity.success();
+    }
+
+    @ApiOperation("限流测试")
+    @RateLimit(limit = 5)
+    @GetMapping("/limit1")
+    public ResponseEntity<String> limit1() {
+        log.info("limit1");
+        return ResponseEntity.success();
     }
 
 }
