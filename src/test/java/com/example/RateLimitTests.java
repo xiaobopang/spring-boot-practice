@@ -27,7 +27,7 @@ class RateLimitTests {
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("id", 3);
         //链式构建请求
-        String result = HttpRequest.get("http://127.0.0.1:8088/test/limit1")
+        String result = HttpRequest.get("http://127.0.0.1:8088/test/limit")
                 .header(Header.AUTHORIZATION, "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpblR5cGUiOiJsb2dpbiIsImxvZ2luSWQiOjEsInJuU3RyIjoiYlF0RnJnT1lYTlVoSG42M2xuSnc3Y0NucERlVlFNTloifQ.Kzf0IpRPa6rY9Ynd0xH5Ng78Ewbp5qt-qvO35cCTy3g")//头信息，多个头信息多次调用此方法即可
                 .form(paramMap)//表单内容
                 .timeout(20000)//超时，毫秒
@@ -39,7 +39,7 @@ class RateLimitTests {
         Thread.sleep(1000);
 
         // test
-        testRateLimit(20);
+        testRateLimit(10);
     }
 
     @SneakyThrows
@@ -52,7 +52,7 @@ class RateLimitTests {
                     HashMap<String, Object> paramMap = new HashMap<>();
                     paramMap.put("id", 3);
                     //链式构建请求
-                    String result = HttpRequest.get("http://127.0.0.1:8088/test/limit1")
+                    String result = HttpRequest.get("http://127.0.0.1:8088/test/limit")
                             .header(Header.AUTHORIZATION, "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpblR5cGUiOiJsb2dpbiIsImxvZ2luSWQiOjEsInJuU3RyIjoiYlF0RnJnT1lYTlVoSG42M2xuSnc3Y0NucERlVlFNTloifQ.Kzf0IpRPa6rY9Ynd0xH5Ng78Ewbp5qt-qvO35cCTy3g")//头信息，多个头信息多次调用此方法即可
                             .form(paramMap)//表单内容
                             .timeout(20000)//超时，毫秒

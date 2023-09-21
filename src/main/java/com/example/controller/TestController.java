@@ -9,7 +9,7 @@ import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpStatus;
 import cn.hutool.json.JSONUtil;
-import com.example.component.ratelimit.RateLimit;
+import com.example.component.ratelimit.RateLimiter;
 import com.example.component.sign.Signature;
 import com.example.domain.ResponseEntity;
 import com.example.domain.TestResp;
@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 
 @Api(tags = "测试 Swagger")
@@ -155,16 +156,22 @@ public class TestController {
         return ResponseEntity.success(String.join(",", id, client, user.toString()));
     }
 
+    /*
+     * 接口每秒只能请求一次,不等待
+     */
     @ApiOperation("限流测试")
-    @RateLimit
+    @RateLimiter(qps = 3)
     @GetMapping("/limit")
     public ResponseEntity<String> limit() {
         log.info("limit");
         return ResponseEntity.success();
     }
 
+    /**
+     * 接口每秒只能请求一次,等待一秒
+     */
+    @RateLimiter(qps = 10, timeout = 1, timeUnit = TimeUnit.SECONDS)
     @ApiOperation("限流测试")
-    @RateLimit(limit = 5)
     @GetMapping("/limit1")
     public ResponseEntity<String> limit1() {
         log.info("limit1");
