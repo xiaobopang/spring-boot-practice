@@ -7,6 +7,7 @@ import com.example.domain.vo.UserVO;
 import com.example.entity.User;
 import com.example.page.TableDataInfo;
 
+import javax.servlet.ServletOutputStream;
 import java.util.List;
 
 /**
@@ -25,8 +26,12 @@ public interface UserService extends IService<User> {
     List<UserVO> selectByParam(UserDTO userDTO);
 
     TableDataInfo<UserVO> userPage(PageQuery pageQuery, UserDTO userDTO);
+
     //更新
     Integer update(User user);
+
+    void downloadExcel(ServletOutputStream outputStream);
+
 }
 
 

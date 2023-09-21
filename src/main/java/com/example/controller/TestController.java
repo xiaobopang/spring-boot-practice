@@ -9,6 +9,7 @@ import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpStatus;
 import cn.hutool.json.JSONUtil;
+import com.example.component.sign.Signature;
 import com.example.domain.ResponseEntity;
 import com.example.domain.TestResp;
 import com.example.domain.vo.TestRespVO;
@@ -20,9 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
@@ -144,6 +143,14 @@ public class TestController {
         } finally {
             WxMaConfigHolder.remove();//清理ThreadLocal
         }
+    }
+    @ApiOperation("接口签名测试")
+    @Signature
+    @PostMapping("test/{id}")
+    public ResponseEntity<String> myController(@PathVariable String id
+            , @RequestParam String client
+            , @RequestBody User user) {
+        return ResponseEntity.success(String.join(",", id, client, user.toString()));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.service.impl;
 
 
+import com.alibaba.excel.EasyExcelFactory;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.domain.dto.UserDTO;
@@ -13,6 +14,8 @@ import com.example.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -54,6 +57,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Integer update(User user) {
         return userMapper.updateById(user);
+    }
+
+    @Override
+    public void downloadExcel(ServletOutputStream outputStream) {
+        EasyExcelFactory.write(outputStream, User.class).sheet("User").doWrite(this::getUserList);
+    }
+
+    private List<User> getUserList() {
+        return Collections.singletonList(User.builder()
+                .id(1).name("test").age(19)
+                .build());
     }
 }
 

@@ -26,6 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 @Api(tags = "用户管理")
 @RestController
@@ -128,6 +129,19 @@ public class UserController {
         return ResponseEntity.success();
     }
 
+    @ApiOperation("Download Excel")
+    @GetMapping("/excel/download")
+    public void download(HttpServletResponse response) {
+        try {
+            response.reset();
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-disposition",
+                    "attachment;filename=user_excel_" + System.currentTimeMillis() + ".xlsx");
+            userService.downloadExcel(response.getOutputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
 

@@ -12,6 +12,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -167,6 +168,22 @@ public class GlobalExceptionHandler {
                                                                HttpServletRequest request) {
         log.error("拦截前端传参未正常接收错误: {}，{} ", request.getRequestURI(), e.getMessage());
         return ResponseEntity.fail("未读取到请求体,请确认参数数据格式是否正确");
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<String> handleMissingServletRequestParameterException(MissingServletRequestParameterException e,
+                                                                                HttpServletRequest request) {
+        log.error("拦截前端传参缺失错误: {}，{} ", request.getRequestURI(), e.getMessage());
+        return ResponseEntity.fail("参数缺失异常：" + e.getMessage());
+    }
+
+    /**
+     * 拦截对外接口的运行时异常
+     */
+    @ExceptionHandler(ServiceException.class)
+    public ResponseEntity<Void> handleServiceException(ServiceException e, HttpServletRequest request) {
+        log.error("拦截对外接口运行时异常'{}',发生未知异常.", request.getRequestURI(), e);
+        return ResponseEntity.fail(e.getMessage());
     }
 
     /**

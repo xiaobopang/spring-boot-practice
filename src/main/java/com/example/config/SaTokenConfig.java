@@ -30,7 +30,7 @@ public class SaTokenConfig implements WebMvcConfigurer {
         registry.addInterceptor(new SaInterceptor(handler -> {
                     // 指定一条 match 规则
                     SaRouter.match("/**")    // 拦截的 path 列表，可以写多个 */
-                            .notMatch("/auth/login", "auth/register")        // 排除掉的 path 列表，可以写多个
+                            .notMatch("/auth/login", "/auth/register", "/user/excel/download")        // 排除掉的 path 列表，可以写多个
                             .notMatch("*.html", "*.css", "*.js", "*.favicon.ico")
                             .check(r -> StpUtil.checkLogin());        // 要执行的校验动作，可以写完整的 lambda 表达式
                 })).addPathPatterns("/**")
