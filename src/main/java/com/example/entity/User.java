@@ -1,21 +1,16 @@
 package com.example.entity;
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.baomidou.mybatisplus.annotation.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.*;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @TableName(value = "user")//指定表名
-public class User {
+public class User extends BaseEntity {
 
     @ExcelProperty("ID")
     private Integer id;
@@ -25,17 +20,6 @@ public class User {
     private Integer age;
     private String salt;
     private String password;
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createdAt;
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updatedAt;
-
-    /**
-     * 删除标志位
-     */
-    @TableLogic
-    @JsonIgnore
-    private LocalDateTime deletedAt;
 
 }
 

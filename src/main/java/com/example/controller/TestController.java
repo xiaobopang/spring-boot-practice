@@ -10,7 +10,7 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpStatus;
 import cn.hutool.json.JSONUtil;
 import com.example.component.ratelimit.RateLimiter;
-import com.example.component.sign.Signature;
+import com.example.component.signature.Signature;
 import com.example.domain.ResponseEntity;
 import com.example.domain.TestResp;
 import com.example.domain.vo.TestRespVO;

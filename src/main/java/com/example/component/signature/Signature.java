@@ -1,4 +1,4 @@
-package com.example.component.sign;
+package com.example.component.signature;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

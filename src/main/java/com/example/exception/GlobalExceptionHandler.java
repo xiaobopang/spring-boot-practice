@@ -91,7 +91,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MissingPathVariableException.class)
     public ResponseEntity<Void> handleMissingPathVariableException(MissingPathVariableException e, HttpServletRequest request) {
-        log.error("请求路径中缺少必需的路径变量'{}',发生系统异常.", request.getRequestURI(), e);
+        log.error("请求路径中缺少必需的路径变量'{}',发生系统异常 {} ", request.getRequestURI(), e.getMessage());
         return ResponseEntity.fail(String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName()));
     }
 
@@ -101,7 +101,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Void> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e,
                                                                           HttpServletRequest request) {
-        log.error("请求参数类型不匹配'{}',发生系统异常.", request.getRequestURI(), e);
+        log.error("请求参数类型不匹配'{}',发生系统异常:{} ", request.getRequestURI(), e.getMessage());
         return ResponseEntity.fail(String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'", e.getName(), e.getRequiredType().getName(), e.getValue()));
     }
 
@@ -121,7 +121,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Void> handleRuntimeException(RuntimeException e, HttpServletRequest request) {
-        log.error("拦截位置运行时异常'{}',发生未知异常.", request.getRequestURI(), e);
+        log.error("拦截位置运行时异常'{}',发生未知异常: {} ", request.getRequestURI(), e.getMessage());
         return ResponseEntity.fail(e.getMessage());
     }
 
@@ -138,9 +138,10 @@ public class GlobalExceptionHandler {
 
     // 全局异常拦截（拦截项目中的NotLoginException异常）
     @ExceptionHandler(NotLoginException.class)
-    public ResponseEntity<Void> handlerNotLoginException(NotLoginException nle, SaTokenException sat) throws Exception {
+    public ResponseEntity<Void> handlerNotLoginException(NotLoginException nle, SaTokenException sat) {
         // 打印堆栈，以供调试
-        nle.printStackTrace();
+//        nle.printStackTrace();
+        log.error("token校验异常: {}, {} ", nle.getMessage(), sat.getMessage());
         // 判断场景值，定制化异常信息
         String message = "";
         if (nle.getType().equals(NotLoginException.NOT_TOKEN)) {
@@ -182,7 +183,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<Void> handleServiceException(ServiceException e, HttpServletRequest request) {
-        log.error("拦截对外接口运行时异常'{}',发生未知异常.", request.getRequestURI(), e);
+        log.error("拦截对外接口运行时异常'{}',发生未知异常: {}", request.getRequestURI(), e.getMessage());
         return ResponseEntity.fail(e.getMessage());
     }
 
@@ -192,7 +193,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Void> handleException(Exception e, HttpServletRequest request) {
-        log.error("请求地址'{}',发生系统异常.", request.getRequestURI(), e);
+        log.error("请求地址'{}',发生系统异常: {} ", request.getRequestURI(), e.getMessage());
         return ResponseEntity.fail(HttpStatus.HTTP_INTERNAL_ERROR, e.getMessage());
     }
 

@@ -1,4 +1,4 @@
-package com.example.component.sign;
+package com.example.component.signature;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import com.example.exception.ServiceException;
@@ -35,7 +35,7 @@ public class SignAspect {
     /**
      * pointcut.
      */
-    @Pointcut("execution(@com.example.component.sign.Signature * *(..))")
+    @Pointcut("execution(@com.example.component.signature.Signature * *(..))")
     private void verifySignPointCut() {
         // nothing
     }
