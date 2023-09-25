@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @Schema(description = "用户DTO")
 public class UserDTO {
-    private Integer id;
+    private Long id;
 
     @Schema(description = "姓名")
     @NotBlank(message = "姓名不能为空")

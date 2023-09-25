@@ -12,6 +12,7 @@ import com.example.mapper.UserMapper;
 import com.example.page.TableDataInfo;
 import com.example.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
@@ -40,7 +41,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
     //添加多条数据
     @Override
-    public UserVO detail(Integer id) {
+    public UserVO detail(Long id) {
         return userMapper.detail(id);
     }
     @Override
@@ -66,7 +67,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     private List<User> getUserList() {
         return Collections.singletonList(User.builder()
-                .id(1).name("test").age(19)
+                .id(1L).name("test").age(19)
                 .build());
     }
 }

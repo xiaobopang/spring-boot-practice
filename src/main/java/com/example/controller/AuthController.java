@@ -3,6 +3,7 @@ package com.example.controller;
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.EscapeUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.example.domain.ResponseEntity;
 import com.example.domain.dto.LoginDTO;
@@ -42,8 +43,8 @@ public class AuthController {
         }
 
         String userPassword = SecureUtil.sha1(password + user.getSalt());
-        if (!BCrypt.checkpw(userPassword, user.getPassword())) {
-            return ResponseEntity.fail("用户名或密码不正确");
+        if (!BCrypt.checkpw(userPassword, EscapeUtil.unescape(user.getPassword()))) {
+            return ResponseEntity.fail("用户名或密码不正确.");
         }
 
         StpUtil.login(user.getId());

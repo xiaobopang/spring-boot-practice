@@ -13,7 +13,7 @@ import java.util.Date;
 public class UserVO {
 
     @Schema(description = "用户id")
-    private Integer id;
+    private Long id;
     @Schema(description = "用户名称")
     private String name;
     @Schema(description = "年龄")

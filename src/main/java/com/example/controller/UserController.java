@@ -2,6 +2,7 @@ package com.example.controller;
 
 import cn.dev33.satoken.secure.BCrypt;
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.EscapeUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -18,6 +19,8 @@ import com.example.mapper.UserMapper;
 import com.example.page.TableDataInfo;
 import com.example.service.OrderService;
 import com.example.service.UserService;
+import com.example.utils.JsonUtils;
+import com.example.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.regex.Matcher;
 
 @Api(tags = "用户管理")
 @RestController
@@ -74,12 +78,13 @@ public class UserController {
     @Operation(summary = "新增用户")
     public ResponseEntity<Void> add(@RequestBody @Validated UserDTO userDTO) {
 
-        log.info("添加用户成功: {}", userDTO.toString());
+        log.info("用户数据: {}", userDTO.toString());
         User user = new User();
-
         // dto 转换为 po,操作数据库.  对象属性值复制, 同名属性值复制
         String salt = RandomUtil.randomString(8);
-        userDTO.setPassword(BCrypt.hashpw((SecureUtil.sha1(userDTO.getPassword() + salt))));
+        String password = EscapeUtil.escape(BCrypt.hashpw((SecureUtil.sha1(userDTO.getPassword() + salt))));
+        log.info("password: {}", EscapeUtil.unescape(password));
+        userDTO.setPassword(password);
         BeanUtil.copyProperties(userDTO, user);
         user.setSalt(salt);
         userService.save(user);
@@ -89,7 +94,7 @@ public class UserController {
     @ApiOperation("用户详情")
     @GetMapping("detail/{id}")
     @Operation(summary = "用户详情")
-    public ResponseEntity<UserVO> detail(@PathVariable(name = "id") Integer id) {
+    public ResponseEntity<UserVO> detail(@PathVariable(name = "id") Long id) {
         UserVO user = userService.detail(id);
         return ResponseEntity.success(user);
     }
@@ -118,7 +123,7 @@ public class UserController {
             return ResponseEntity.fail("用户不存在");
         }
         User u1 = new User();
-        userDTO.setId(id);
+        userDTO.setId(Long.valueOf(id));
         userDTO.setPassword(BCrypt.hashpw((SecureUtil.sha1(userDTO.getPassword() + user.getSalt()))));
         BeanUtil.copyProperties(userDTO, u1);
 

@@ -6,7 +6,7 @@ spring:
     username: root
     password: 12345678
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/spring-test?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/spring-test?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false&autoReconnect=true
     type: com.zaxxer.hikari.HikariDataSource #当前使用的数据源 Hikari
     hikari:
       minimum-idle: 1 #	池中维护的最小空闲连接数 默认10 根据实际情况来
@@ -47,7 +47,6 @@ mybatis-plus:
       logic-delete-field: deletedAt # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
       logic-delete-value: NOW() # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 'NULL' # 逻辑未删除值(默认为 0)
-      id-type: auto
 
 
 #Sa-Token配置
