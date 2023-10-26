@@ -24,6 +24,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
         log.info("更新数据开始调用自动填充。。。");
-        this.strictUpdateFill(metaObject, "updatedAt" , LocalDateTime.class, LocalDateTime.now()); // 起始版本 3.3.0(推荐)
+        metaObject.setValue("updatedAt" , LocalDateTime.now());
+        //this.strictUpdateFill(metaObject, "updatedAt" , LocalDateTime.class, LocalDateTime.now()); // 起始版本 3.3.0(推荐)
     }
 }

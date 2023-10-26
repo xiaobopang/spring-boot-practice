@@ -12,7 +12,6 @@ import com.example.mapper.UserMapper;
 import com.example.page.TableDataInfo;
 import com.example.service.UserService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;

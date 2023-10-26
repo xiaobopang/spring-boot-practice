@@ -1,8 +1,8 @@
 package com.example.controller;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.secure.BCrypt;
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.EscapeUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -19,8 +19,6 @@ import com.example.mapper.UserMapper;
 import com.example.page.TableDataInfo;
 import com.example.service.OrderService;
 import com.example.service.UserService;
-import com.example.utils.JsonUtils;
-import com.example.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.util.regex.Matcher;
 
 @Api(tags = "用户管理")
 @RestController
@@ -67,6 +64,7 @@ public class UserController {
 
     @ApiOperation("用户列表（分页2）")
     @GetMapping("list2")
+    @SaIgnore
     @Operation(summary = "用户分页查询2")
     public TableDataInfo<UserVO> orderPage(UserDTO userDTO, PageQuery pageQuery) {
         return userService.userPage(pageQuery, userDTO);
@@ -82,12 +80,12 @@ public class UserController {
         User user = new User();
         // dto 转换为 po,操作数据库.  对象属性值复制, 同名属性值复制
         String salt = RandomUtil.randomString(8);
-        String password = EscapeUtil.escape(BCrypt.hashpw((SecureUtil.sha1(userDTO.getPassword() + salt))));
-        log.info("password: {}", EscapeUtil.unescape(password));
+        String password = BCrypt.hashpw((SecureUtil.sha1(userDTO.getPassword() + salt)));
+
         userDTO.setPassword(password);
         BeanUtil.copyProperties(userDTO, user);
         user.setSalt(salt);
-        userService.save(user);
+        userMapper.insert(user);
         return ResponseEntity.success();
     }
 

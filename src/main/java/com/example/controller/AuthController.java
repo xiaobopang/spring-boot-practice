@@ -43,7 +43,7 @@ public class AuthController {
         }
 
         String userPassword = SecureUtil.sha1(password + user.getSalt());
-        if (!BCrypt.checkpw(userPassword, EscapeUtil.unescape(user.getPassword()))) {
+        if (!BCrypt.checkpw(userPassword, user.getPassword())) {
             return ResponseEntity.fail("用户名或密码不正确.");
         }
 

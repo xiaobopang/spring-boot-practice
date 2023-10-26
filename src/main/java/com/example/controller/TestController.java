@@ -1,8 +1,5 @@
 package com.example.controller;
 
-import cn.binarywang.wx.miniapp.api.WxMaService;
-import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
-import cn.binarywang.wx.miniapp.util.WxMaConfigHolder;
 import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.http.Header;
@@ -15,13 +12,10 @@ import com.example.domain.ResponseEntity;
 import com.example.domain.TestResp;
 import com.example.domain.vo.TestRespVO;
 import com.example.entity.User;
-import com.example.utils.JsonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.common.error.WxErrorException;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -34,16 +28,13 @@ import java.util.concurrent.TimeUnit;
 
 
 @Api(tags = "测试 Swagger")
-@AllArgsConstructor
 @RestController
-@Slf4j
 @RequestMapping("/test")
+@Slf4j
 public class TestController {
 
-    private final WxMaService wxMaService;
-
-    @Resource
-    private RestTemplate restTemplate;
+    @Value("${wx.miniapp.configs[0].appid}")
+    private String appid;
 
     @ApiOperation("HelloWorld测试")
     @GetMapping("/hello")
@@ -53,7 +44,7 @@ public class TestController {
         System.out.println("东八区时间: " + LocalDateTime.now());
         String uuid = IdUtil.randomUUID();
 
-        return ResponseEntity.success("success", uuid);
+        return ResponseEntity.success("success", appid + " " + uuid);
     }
 
     @ApiOperation("获取参数测试")
@@ -117,34 +108,6 @@ public class TestController {
         }
 
         return ResponseEntity.success();
-    }
-
-    /**
-     * 微信小程序登陆接口
-     */
-    @GetMapping("/wxLogin")
-    public ResponseEntity<String> wxLogin(String appid, String code) {
-
-        if (StringUtils.isBlank(code)) {
-            return ResponseEntity.fail("empty jscode");
-        }
-
-        if (!wxMaService.switchover(appid)) {
-            throw new IllegalArgumentException(String.format("未找到对应appid=[%s]的配置，请核实！", appid));
-        }
-
-        try {
-            WxMaJscode2SessionResult session = wxMaService.getUserService().getSessionInfo(code);
-            log.info(session.getSessionKey());
-            log.info(session.getOpenid());
-            //TODO 可以增加自己的逻辑，关联业务相关数据
-            return ResponseEntity.success("success", JsonUtils.toJson(session));
-        } catch (WxErrorException e) {
-            log.error(e.getMessage(), e);
-            return ResponseEntity.fail(e.toString());
-        } finally {
-            WxMaConfigHolder.remove();//清理ThreadLocal
-        }
     }
 
     @ApiOperation("接口签名测试")
